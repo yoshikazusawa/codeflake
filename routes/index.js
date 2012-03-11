@@ -64,7 +64,7 @@
           title: 'codeflake',
           id: id,
           syntax: syntax,
-          langs: 'perl javascript diff'.split(/\s/),
+          langs: 'perl javascript diff mysql'.split(/\s/),
           recent: recent,
           flake: flake,
           path: createPath(syntax, id)
