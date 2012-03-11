@@ -1,0 +1,29 @@
+.container
+    .navbar.navbar-fixed-top: div.navbar-inner 
+        div.container: a.brand(href='/')= title
+
+    .row
+        .span8
+            p: a.label(href=path)= id
+            ul.nav.nav-tabs
+                each lang in langs
+                    if (syntax == lang)
+                        li.active: a(href='#')= lang
+                    else
+                        li: a(href='#')= lang
+
+            form(method='post',action=path)
+                textarea#code(name='flake')= flake
+                input.syntax(type='hidden',name='syntax',value=syntax)
+                input.btn.btn-large.btn-primary(type='submit',value='SAVE')
+
+        .span4
+            if (recent && recent.length > 0)
+                ul.nav.nav-list
+                    li.nav-title RECENT FLAKES
+                    each flake in recent
+                        li.item: a(href=flake)= flake
+
+script(src='/javascripts/codemirror-compressed.js')
+script(src='/javascripts/jquery.min.js')
+script(src='/javascripts/codeflake.js')

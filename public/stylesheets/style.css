@@ -1,0 +1,14 @@
+body {
+    padding-top: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+li.item {
+    font-size: small;
+}
+
+textarea {
+    width: 100%;
+    height: 400px;
+    margin-top: -18px;
+}
