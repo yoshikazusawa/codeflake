@@ -3,6 +3,9 @@ $(function() {
         mode: $('.nav-tabs .active').text(),
         theme: 'default',
         lineNumbers: true,
+        smartIndent: true,
+        indentUnit : 4,
+        lineWrapping: true,
         onChange: function() { codeMirror.save(); }
     });
     var tabs = $('.nav-tabs li');

@@ -4,7 +4,10 @@
 
     .row
         .span8
-            p: a.label(href=path)= id
+            p
+                a.label(href=path)= id
+                &nbsp;
+                a.label.label-info(href='/') create new
             ul.nav.nav-tabs
                 each lang in langs
                     if (syntax == lang)

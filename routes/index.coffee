@@ -3,25 +3,27 @@ crypto = require 'crypto'
 client = redis.createClient()
 
 createPath = (syntax, id) -> '/' + syntax + '/' + id
+createKey  = (id) -> 'flake-' + id
 random     = -> Math.floor Math.random() * 10000
+recentKey  = 'recentflakes'
 
-entry = do ->
+# models
+entry =
     get: (id, callback) ->
         client.get id, callback
     put: (id, flake, callback) ->
         client.set id, flake, ->
             client.expire id, 60 * 60 * 24, callback
-        
 
-recent = do ->
-    key = 'recentflakes'
+recent =
     get: (callback) ->
-        client.lrange key, 0, 10, callback
+        client.lrange recentKey, 0, 20, callback
     put: (path, callback) ->
-        client.lrem  key, 0, path, ->
-            client.lpush key, path, ->
-                client.ltrim key, 0, 100, callback
+        client.lrem recentKey, 0, path, ->
+            client.lpush recentKey, path, ->
+                client.ltrim recentKey, 0, 100, callback
 
+# controllers
 root = (req, res) ->
     digest = do ->
         seed = [random(), Date.now()].join ''
@@ -30,7 +32,7 @@ root = (req, res) ->
 
 index = (req, res) ->
     { syntax, id } = req.params
-    entry.get id, (err, flake) ->
+    entry.get createKey(id), (err, flake) ->
         recent.get (err, recent) ->
             res.render 'index',
                 title : 'codeflake',
@@ -44,7 +46,9 @@ index = (req, res) ->
 post = (req, res) ->
     { id } = req.params
     syntax = req.body.syntax
-    entry.put id, req.body.flake, () ->
+    flake = req.body.flake
+    res.redirect '/' unless /[0-9a-z]+/.test(flake)
+    entry.put createKey(id), req.body.flake, () ->
         path = createPath syntax, id
         recent.put path, -> res.redirect path
 

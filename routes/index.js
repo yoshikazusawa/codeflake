@@ -1,5 +1,5 @@
 (function() {
-  var client, createPath, crypto, entry, index, post, random, recent, redis, root;
+  var client, createKey, createPath, crypto, entry, index, post, random, recent, recentKey, redis, root;
 
   redis = require('redis');
 
@@ -11,39 +11,39 @@
     return '/' + syntax + '/' + id;
   };
 
+  createKey = function(id) {
+    return 'flake-' + id;
+  };
+
   random = function() {
     return Math.floor(Math.random() * 10000);
   };
 
-  entry = (function() {
-    return {
-      get: function(id, callback) {
-        return client.get(id, callback);
-      },
-      put: function(id, flake, callback) {
-        return client.set(id, flake, function() {
-          return client.expire(id, 60 * 60 * 24, callback);
-        });
-      }
-    };
-  })();
+  recentKey = 'recentflakes';
 
-  recent = (function() {
-    var key;
-    key = 'recentflakes';
-    return {
-      get: function(callback) {
-        return client.lrange(key, 0, 10, callback);
-      },
-      put: function(path, callback) {
-        return client.lrem(key, 0, path, function() {
-          return client.lpush(key, path, function() {
-            return client.ltrim(key, 0, 100, callback);
-          });
+  entry = {
+    get: function(id, callback) {
+      return client.get(id, callback);
+    },
+    put: function(id, flake, callback) {
+      return client.set(id, flake, function() {
+        return client.expire(id, 60 * 60 * 24, callback);
+      });
+    }
+  };
+
+  recent = {
+    get: function(callback) {
+      return client.lrange(recentKey, 0, 20, callback);
+    },
+    put: function(path, callback) {
+      return client.lrem(recentKey, 0, path, function() {
+        return client.lpush(recentKey, path, function() {
+          return client.ltrim(recentKey, 0, 100, callback);
         });
-      }
-    };
-  })();
+      });
+    }
+  };
 
   root = function(req, res) {
     var digest;
@@ -58,7 +58,7 @@
   index = function(req, res) {
     var id, syntax, _ref;
     _ref = req.params, syntax = _ref.syntax, id = _ref.id;
-    return entry.get(id, function(err, flake) {
+    return entry.get(createKey(id), function(err, flake) {
       return recent.get(function(err, recent) {
         return res.render('index', {
           title: 'codeflake',
@@ -74,10 +74,12 @@
   };
 
   post = function(req, res) {
-    var id, syntax;
+    var flake, id, syntax;
     id = req.params.id;
     syntax = req.body.syntax;
-    return entry.put(id, req.body.flake, function() {
+    flake = req.body.flake;
+    if (!/[0-9a-z]+/.test(flake)) res.redirect('/');
+    return entry.put(createKey(id), req.body.flake, function() {
       var path;
       path = createPath(syntax, id);
       return recent.put(path, function() {
