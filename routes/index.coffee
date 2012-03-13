@@ -31,9 +31,11 @@ root = (req, res) ->
     res.redirect createPath('perl', digest.substring(0, 12))
 
 index = (req, res) ->
-    { syntax, id } = req.params
+    { syntax, id, format } = req.params
     entry.get createKey(id), (err, flake) ->
         recent.get (err, recent) ->
+            return res.send(flake) if format is 'plain'
+            return res.json({ id: id, flake: flake }) if format is 'json'
             res.render 'index',
                 title : 'codeflake',
                 id    : id,

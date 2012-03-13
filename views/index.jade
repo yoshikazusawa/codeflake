@@ -27,6 +27,13 @@
                     each flake in recent
                         li.item: a(href=flake)= flake
 
+            if (flake)
+                p &nbsp;
+                ul.nav.nav-list
+                    li.nav-title OTHER FORMAT
+                    li.item: a(href='#{path}/json') JSON
+                    li.item: a(href='#{path}/plain') PLAIN
+
 script(src='/javascripts/codemirror-compressed.js')
 script(src='/javascripts/jquery.min.js')
 script(src='/javascripts/codeflake.js')

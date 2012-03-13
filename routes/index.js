@@ -56,10 +56,17 @@
   };
 
   index = function(req, res) {
-    var id, syntax, _ref;
-    _ref = req.params, syntax = _ref.syntax, id = _ref.id;
+    var format, id, syntax, _ref;
+    _ref = req.params, syntax = _ref.syntax, id = _ref.id, format = _ref.format;
     return entry.get(createKey(id), function(err, flake) {
       return recent.get(function(err, recent) {
+        if (format === 'plain') return res.send(flake);
+        if (format === 'json') {
+          return res.json({
+            id: id,
+            flake: flake
+          });
+        }
         return res.render('index', {
           title: 'codeflake',
           id: id,
