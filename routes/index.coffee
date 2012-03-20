@@ -6,6 +6,11 @@ createPath = (syntax, id) -> '/' + syntax + '/' + id
 createKey  = (id) -> 'flake-' + id
 random     = -> Math.floor Math.random() * 10000
 recentKey  = 'recentflakes'
+createId = ->
+    seed = [random(), Date.now()].join ''
+    crypto.createHash('sha1').update(seed)
+          .digest('hex').substring(0, 12)
+
 
 # models
 entry =
@@ -25,10 +30,7 @@ recent =
 
 # controllers
 root = (req, res) ->
-    digest = do ->
-        seed = [random(), Date.now()].join ''
-        crypto.createHash('sha1').update(seed).digest('hex')
-    res.redirect createPath('perl', digest.substring(0, 12))
+    res.redirect createPath('perl', createId())
 
 index = (req, res) ->
     { syntax, id, format } = req.params
@@ -46,7 +48,7 @@ index = (req, res) ->
                 path  : createPath(syntax, id)
 
 post = (req, res) ->
-    { id } = req.params
+    id = req.params.id or createId()
     syntax = req.body.syntax
     flake = req.body.flake
     res.redirect '/' unless /[0-9a-z]+/.test(flake)

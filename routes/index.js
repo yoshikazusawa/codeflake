@@ -1,5 +1,5 @@
 (function() {
-  var client, createKey, createPath, crypto, entry, index, post, random, recent, recentKey, redis, root;
+  var client, createId, createKey, createPath, crypto, entry, index, post, random, recent, recentKey, redis, root;
 
   redis = require('redis');
 
@@ -20,6 +20,12 @@
   };
 
   recentKey = 'recentflakes';
+
+  createId = function() {
+    var seed;
+    seed = [random(), Date.now()].join('');
+    return crypto.createHash('sha1').update(seed).digest('hex').substring(0, 12);
+  };
 
   entry = {
     get: function(id, callback) {
@@ -46,13 +52,7 @@
   };
 
   root = function(req, res) {
-    var digest;
-    digest = (function() {
-      var seed;
-      seed = [random(), Date.now()].join('');
-      return crypto.createHash('sha1').update(seed).digest('hex');
-    })();
-    return res.redirect(createPath('perl', digest.substring(0, 12)));
+    return res.redirect(createPath('perl', createId()));
   };
 
   index = function(req, res) {
@@ -82,7 +82,7 @@
 
   post = function(req, res) {
     var flake, id, syntax;
-    id = req.params.id;
+    id = req.params.id || createId();
     syntax = req.body.syntax;
     flake = req.body.flake;
     if (!/[0-9a-z]+/.test(flake)) res.redirect('/');
