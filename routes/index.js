@@ -1,11 +1,13 @@
 (function() {
-  var client, createId, createKey, createPath, crypto, entry, index, post, random, recent, recentKey, redis, root;
+  var client, config, createId, createKey, createPath, crypto, entry, index, post, random, recent, recentKey, redis, root;
 
   redis = require('redis');
 
   crypto = require('crypto');
 
   client = redis.createClient();
+
+  config = JSON.parse(require('fs').readFileSync('config.json'));
 
   createPath = function(syntax, id) {
     return '/' + syntax + '/' + id;
@@ -52,7 +54,7 @@
   };
 
   root = function(req, res) {
-    return res.redirect(createPath('perl', createId()));
+    return res.redirect(createPath(config.syntaxes[0], createId()));
   };
 
   index = function(req, res) {
@@ -71,7 +73,7 @@
           title: 'codeflake',
           id: id,
           syntax: syntax,
-          langs: 'perl javascript diff mysql'.split(/\s/),
+          langs: config.syntaxes,
           recent: recent,
           flake: flake,
           path: createPath(syntax, id)

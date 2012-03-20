@@ -1,6 +1,7 @@
 redis  = require 'redis'
 crypto = require 'crypto'
 client = redis.createClient()
+config = JSON.parse require('fs').readFileSync('config.json')
 
 createPath = (syntax, id) -> '/' + syntax + '/' + id
 createKey  = (id) -> 'flake-' + id
@@ -30,7 +31,7 @@ recent =
 
 # controllers
 root = (req, res) ->
-    res.redirect createPath('perl', createId())
+    res.redirect createPath(config.syntaxes[0], createId())
 
 index = (req, res) ->
     { syntax, id, format } = req.params
@@ -42,7 +43,7 @@ index = (req, res) ->
                 title : 'codeflake',
                 id    : id,
                 syntax: syntax,
-                langs : 'perl javascript diff mysql'.split(/\s/),
+                langs : config.syntaxes,
                 recent: recent,
                 flake : flake,
                 path  : createPath(syntax, id)

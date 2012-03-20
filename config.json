@@ -1,0 +1,9 @@
+{
+    "syntaxes": [
+        "perl"
+      , "javascript"
+      , "diff"
+      , "mysql"
+      , "java"
+    ]
+}
