@@ -16,7 +16,7 @@
                         li: a(href='#')= lang
 
             form(method='post',action=path)
-                textarea#code(name='flake')= flake
+                div#editor= flake
                 input.syntax(type='hidden',name='syntax',value=syntax)
                 input.btn.btn-large.btn-primary(type='submit',value='SAVE')
 
@@ -35,4 +35,5 @@
                     li.item: a(href='#{path}/plain') PLAIN
 
 script(src='/javascripts/jquery.min.js')
+script(src='/javascripts/ace.js')
 script(src='/javascripts/codeflake.js')

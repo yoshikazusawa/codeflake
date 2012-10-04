@@ -1,5 +1,8 @@
 $(function() {
     var tabs = $('.nav-tabs li');
+    var ace  = window.ace;
+
+    ace.edit('editor');
     var syntaxMode = $('form .syntax');
     tabs.click(function(evt) {
         var current = $(this);

@@ -7,8 +7,12 @@ li.item {
     font-size: small;
 }
 
-textarea {
+#editor {
+    position: relative;
     width: 100%;
-    height: 400px;
-    margin-top: -18px;
+    height: 500px;
+    top: 0;
+    left:0;
+    right:0;
+    bottom:0;
 }
