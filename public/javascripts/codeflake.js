@@ -11,6 +11,7 @@ $(function() {
     });
     
     editor.getSession().setMode('ace/mode/' + syntaxMode.val());
+    editor.setShowPrintMargin(false);
 
     tabs.click(function(evt) {
         var current = $(this);
