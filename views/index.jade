@@ -8,15 +8,16 @@
                 a.label(href=path)= id
                 &nbsp;
                 a.label.label-info(href='/') create new
-            ul.nav.nav-tabs
+
+            ul.nav.nav-pills.syntax-tab
                 each lang in langs
                     if (syntax == lang)
                         li.active: a(href='#')= lang
                     else
                         li: a(href='#')= lang
-
-            form(method='post',action=path)
+            form.flake-form(method='post',action=path)
                 div#editor= flake
+                textarea(name='flake')#flake-body
                 input.syntax(type='hidden',name='syntax',value=syntax)
                 input.btn.btn-large.btn-primary(type='submit',value='SAVE')
 

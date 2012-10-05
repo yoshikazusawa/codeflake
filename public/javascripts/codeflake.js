@@ -1,9 +1,15 @@
 $(function() {
-    var tabs = $('.nav-tabs li');
+    var tabs = $('.syntax-tab li');
     var ace  = window.ace;
 
-    ace.edit('editor');
+    var editor = ace.edit('editor');
     var syntaxMode = $('form .syntax');
+    var body = $('#flake-body');
+
+    $('form').on('submit', function() {
+        body.html(editor.getValue());
+    });
+    
     tabs.click(function(evt) {
         var current = $(this);
         var syntax = current.text();
