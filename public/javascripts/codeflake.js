@@ -10,6 +10,8 @@ $(function() {
         body.html(editor.getValue());
     });
     
+    editor.getSession().setMode('ace/mode/' + syntaxMode.val());
+
     tabs.click(function(evt) {
         var current = $(this);
         var syntax = current.text();
@@ -19,6 +21,7 @@ $(function() {
 
         tabs.removeClass('active');
         current.addClass('active');
+        editor.getSession().setMode('ace/mode/' + syntax);
 
         syntaxMode.val(syntax);
     });
