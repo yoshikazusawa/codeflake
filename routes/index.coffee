@@ -14,12 +14,13 @@ createId = ->
 
 
 # models
+deadline = 60 * 60 * 24 * 180
 entry =
     get: (id, callback) ->
         client.get id, callback
     put: (id, flake, callback) ->
         client.set id, flake, ->
-            client.expire id, 60 * 60 * 24, callback
+            client.expire id, deadline, callback
 
 recent =
     get: (callback) ->
