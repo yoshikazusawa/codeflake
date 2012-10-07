@@ -38,7 +38,7 @@ index = (req, res) ->
     { syntax, id, format } = req.params
     entry.get createKey(id), (err, flake) ->
         recent.get (err, recent) ->
-            return res.send(flake) if format is 'plain'
+            return res.send(flake, 'Content-Type' : 'text/plain') if format is 'plain'
             return res.json({ id: id, flake: flake }) if format is 'json'
             res.render 'index',
                 title : 'codeflake',

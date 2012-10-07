@@ -66,7 +66,9 @@
     return entry.get(createKey(id), function(err, flake) {
       return recent.get(function(err, recent) {
         if (format === 'plain') {
-          return res.send(flake);
+          return res.send(flake, {
+            'Content-Type': 'text/plain'
+          });
         }
         if (format === 'json') {
           return res.json({
