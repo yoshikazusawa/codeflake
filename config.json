@@ -3,7 +3,9 @@
         "perl"
       , "javascript"
       , "diff"
-      , "mysql"
+      , "sql"
       , "java"
+      , "c_cpp"
+      , "text"
     ]
 }
