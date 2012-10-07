@@ -13,6 +13,15 @@ $(function() {
     editor.getSession().setMode('ace/mode/' + syntaxMode.val());
     editor.setTheme('ace/theme/textmate');
     editor.setShowPrintMargin(false);
+    editor.setShowFoldWidgets(false);
+    editor.commands.addCommand({
+        name: 'myCommand',
+        bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+        exec: function(editor) {
+            $('form').submit();
+        }
+    });
+
 
     tabs.click(function(evt) {
         var current = $(this);
