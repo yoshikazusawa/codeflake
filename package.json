@@ -1,10 +1,15 @@
 {
     "name": "codeflake"
-  , "version": "0.2.0"
+  , "author": {
+      "name": "yoshikazusawa"
+  }
+  , "version": "1.4.0"
   , "private": true
   , "dependencies": {
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
     , "redis": ">= 0.0.1"
+    , "grunt": ">= 0.3.16"
+    , "grunt-contrib": ">= 0.2.1"
   }
 }
