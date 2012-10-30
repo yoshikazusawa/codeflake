@@ -53,7 +53,7 @@ post = (req, res) ->
     id = req.params.id or createId()
     syntax = req.body.syntax
     flake = req.body.flake
-    res.redirect '/' unless /[0-9a-z]+/.test(flake)
+    return res.redirect '/' unless /[0-9a-z]+/.test(flake)
     entry.put createKey(id), req.body.flake, () ->
         path = createPath syntax, id
         recent.put path, -> res.redirect path
