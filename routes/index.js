@@ -95,7 +95,7 @@
     syntax = req.body.syntax;
     flake = req.body.flake;
     if (!/[0-9a-z]+/.test(flake)) {
-      res.redirect('/');
+      return res.redirect('/');
     }
     return entry.put(createKey(id), req.body.flake, function() {
       var path;
