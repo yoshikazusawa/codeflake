@@ -9,8 +9,11 @@ random     = -> Math.floor Math.random() * 10000
 recentKey  = 'recentflakes'
 createId = ->
     seed = [random(), Date.now()].join ''
-    crypto.createHash('sha1').update(seed)
-          .digest('hex').substring(0, 12)
+    crypto
+        .createHash 'sha1'
+        .update seed
+        .digest 'hex'
+        .substring 0, 12
 
 
 # models
@@ -53,7 +56,7 @@ post = (req, res) ->
     id = req.params.id or createId()
     syntax = req.body.syntax
     flake = req.body.flake
-    return res.redirect '/' unless /[0-9a-z]+/.test(flake)
+    return res.redirect '/' unless /[0-9a-z]+/.test flake
     entry.put createKey(id), req.body.flake, () ->
         path = createPath syntax, id
         recent.put path, -> res.redirect path
